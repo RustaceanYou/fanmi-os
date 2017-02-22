@@ -16,5 +16,7 @@ A tiny OS kernel written in rust.
    $ rustup target add i686-unknown-linux-gnu
    ```
 
-4. Run `run.ps1`
+4. - Run `$ make run`
+   - Build `$ make all`
+   - Build & run `$ make dev`
 
