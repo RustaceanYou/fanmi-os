@@ -1,9 +1,12 @@
 use color::Color;
-use unsafe_func;
+use unsafe_func::write_memory;
+use size::Size;
 
-pub fn clear(background: Color) {
+pub unsafe fn clear(size: Size, background: Color) {
     let base_addr = 0xb8000;
-    for i in 0..80 * 25 {
-        unsafe_func::write_memory::<u32>(base_addr + i * 2, (background as u32) << 12);
+    let width = size.width;
+    let height = size.height;
+    for i in 0..width * height {
+        write_memory::<u32>(base_addr + i as u32 * 2, (background as u32) << 12);
     }
 }

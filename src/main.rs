@@ -1,28 +1,27 @@
-#![feature(custom_attribute)]
 #![no_std]
-#![allow(dead_code)]
-#![allow(unused_attributes)]
-#![feature(asm)]
+#![feature(custom_attribute, asm)]
+#![allow(dead_code, unused_attributes)]
 
 mod color;
 mod unsafe_func;
 mod console;
 mod screen;
+mod size;
+mod point;
 
 use color::Color;
+use size::Size;
+use console::Console;
+use unsafe_func::halt;
 
 #[no_mangle]
 #[no_split_stack]
-pub fn main() {
-    let background_color = Color::LightBlue;
-    let foreground_color = Color::White;
-
-    screen::clear(background_color);
-
-    let msg = ['H', 'e', 'l', 'l', 'o', ',', ' ', 'F', 'a', 'n', 'm', 'i', 'O', 'S'];
-    console::print(0xb8000, background_color, foreground_color, &msg);
-
+pub unsafe fn main() {
+    let mut console = Console::new(Size::new(80, 25), Color::LightBlue, Color::White);
+    for _ in 0..3 {
+        console.println("Hello, FanmiOS!");
+    }
     loop {
-        unsafe_func::halt();
+        halt();
     }
 }

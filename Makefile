@@ -1,12 +1,12 @@
 all: dist/FanmiOS.img
 
 run: dist/FanmiOS.img
-	qemu-system-i386.exe -drive file=.\dist\FanmiOS.img,if=floppy,format=raw
+	qemu-system-i386 -drive file=.\dist\FanmiOS.img,if=floppy,format=raw
 
-dev: all run
+dev: clean all run
 
 build/main.o: src/main.rs
-	rustc -O --target i686-unknown-linux-gnu --crate-type lib -o $@ --emit obj $<
+	rustc -O --target i686-unknown-linux-gnu --crate-type lib -o $@ --emit obj -C relocation-model=static $<
 
 build/main.bin: build/main.o
 	bash -e -c "ld -m elf_i386 -o $@ -T linker.ld $<"
